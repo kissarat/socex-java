@@ -1,6 +1,6 @@
 package store.socex.factor;
 
-import store.socex.lib.MyClass;
+import store.socex.lib.Lord;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +29,6 @@ public final class AppDriver {
     public static void main(final String[] args) {
         logger.info("hello info");
 
-        MyClass klass = new MyClass();
+        Lord klass = new Lord();
     }
 }

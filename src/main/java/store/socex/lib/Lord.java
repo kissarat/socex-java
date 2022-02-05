@@ -8,14 +8,14 @@ import org.slf4j.LoggerFactory;
  *
  * @author Taras Labiak <kissarat@gmail.com>
  */
-public class MyClass {
+public class Lord {
 
     /** The logger for this class. */
-    private static final Logger logger = LoggerFactory.getLogger(MyClass.class);
+    private static final Logger logger = LoggerFactory.getLogger(Lord.class);
 
     /**
      * Constructor.
      */
-    public MyClass() {
+    public Lord() {
     }
 }

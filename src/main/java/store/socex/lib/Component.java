@@ -1,8 +1,8 @@
 package store.socex.lib;
 
-import java.util.stream.Stream;
+import store.socex.lib.simple.SimpleJoint;
 
-public interface Component {
+public interface Component extends SimpleJoint {
+    default String getId() { return getJointId(); };
     default String getComponentName() { return getClass().getName(); };
-//    default <Value, Name extends String> String getContextName(Context<Value, Name> ctx) { return ctx.get };
 }
