@@ -1,4 +1,4 @@
 package store.socex.lib;
 
-public interface Manager {
+public interface Manager extends Component {
 }
