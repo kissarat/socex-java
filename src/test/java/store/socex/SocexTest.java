@@ -13,7 +13,7 @@ import org.junit.Test;
 /**
  * Unit test for MyClass
  */
-public class MyClassTest {
+public class SocexTest {
 
     @Before
     public void setup() {
@@ -40,7 +40,7 @@ public class MyClassTest {
      * @param args (unused)
      */
     public static void main(final String[] args) {
-        junit.textui.TestRunner.run(new junit.framework.JUnit4TestAdapter(MyClassTest.class));
+        junit.textui.TestRunner.run(new junit.framework.JUnit4TestAdapter(SocexTest.class));
     }
 
 }

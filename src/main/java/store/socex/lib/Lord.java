@@ -18,4 +18,8 @@ public class Lord {
      */
     public Lord() {
     }
+
+    public static void main(String[] args) {
+
+    }
 }

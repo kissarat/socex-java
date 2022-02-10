@@ -1,10 +1,9 @@
 package store.socex.lib;
 
-import store.socex.lib.here.HereJoint;
 import store.socex.lib.simple.SimpleDomain;
 
-import java.util.Dictionary;
-
-public class Singularity extends Registry {
-
+public class Singularity extends Registry implements SimpleDomain {
+    protected Singularity() {
+        super();
+    }
 }

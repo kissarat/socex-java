@@ -7,6 +7,6 @@ public interface SimpleDomain extends Domain<String, SimpleJoint, SimpleDomain> 
     String getPathSplitter();
 
     default String createJointName(SimpleJoint joint) {
-        return getDomainName();
+        return getDomainName() + getPathSplitter() + joint.getJointId();
     }
 }

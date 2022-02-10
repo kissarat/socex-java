@@ -3,16 +3,25 @@ package store.socex.lib.here;
 import store.socex.lib.simple.SimpleDomain;
 import store.socex.lib.simple.SimpleJoint;
 
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.Map;
+
 public class HereDomain implements SimpleDomain {
+    private String name;
+    private Map<String, Object> components;
 
-    @Override
-    public void bind(SimpleJoint joint) {
-
+    public HereDomain(String name) {
+        this.name = name;
+        this.components = new Hashtable<>();
     }
 
     @Override
+    public void bind(SimpleJoint joint) {}
+
+    @Override
     public Object getObject(String name) {
-        return null;
+        return "";
     }
 
     @Override
@@ -33,5 +42,15 @@ public class HereDomain implements SimpleDomain {
     @Override
     public void close() throws Exception {
 
+    }
+
+    @Override
+    public String getDomainName() {
+        return this.name;
+    }
+
+    @Override
+    public String getPathSplitter() {
+        return ":";
     }
 }
