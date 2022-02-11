@@ -5,15 +5,18 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>socex-core</artifactId>
   <properties>
-    <project.version>0.1.0</project.version>
-    <project.artifact.id>socex-core</project.artifact.id>
+    <target.java.version>11</target.java.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <checkstyle.config.location>src/main/resources/google_checks_modified.xml</checkstyle.config.location>
+    <project.version>0.1.0</project.version>
+    <spring.boot.version>2.6.3</spring.boot.version>
+    <project.artifact.id>socex-core</project.artifact.id>
   </properties>
   <parent>
-    <groupId>store.socex</groupId>
-    <artifactId>store-core</artifactId>
-    <version>0.1.0</version>
-    <relativePath>src/main/resources/socex.xml</relativePath>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.6.3</version>
+    <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <version>0.1.0</version>
   <packaging>jar</packaging>
@@ -21,9 +24,69 @@
   <url>http://maven.apache.org</url>
 
   <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-tomcat</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.6.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20160810</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.25</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>2.5</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>${target.java.version}</source>
+          <target>${target.java.version}</target>
+          <compilerArgs>
+            <arg>-Xlint:all</arg>
+            <arg>-Xlint:-serial</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>

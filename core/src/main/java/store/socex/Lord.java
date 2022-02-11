@@ -1,32 +1,17 @@
 package store.socex;
 
-import java.util.concurrent.Executor;
+import java.lang.reflect.InvocationTargetException;
 
-public class Lord implements Executor {
-    private static final Lord instance = new Lord();
-
-    @Override
-    public void execute(Runnable command) {
-        command.run();
-    }
-
-    public void list(Iterable<Object> items) {
-        for(var item: items) {
-            System.out.println(item.toString());
-        }
-    }
-
-    public static Lord getInstance() {
-        return instance;
-    }
-
-    static Object resolve(String name) {
-        return Registry.getInstance().resolve(name);
-    }
-
+public class Lord {
     public static void main(String[] args) {
-        var executor = (Executor) resolve(Registry.EXECUTOR);
-        var runnable = (Runnable) resolve(Registry.RUN);
-        executor.execute(runnable);
+        try {
+            var mainClass = Class.forName(System.getProperty("run"));
+            var constructor = mainClass.getConstructor();
+            Runnable runnable = (Runnable) constructor.newInstance();
+            var app = new Socex(runnable);
+            app.run();
+        } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 }

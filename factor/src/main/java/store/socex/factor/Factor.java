@@ -2,16 +2,10 @@ package store.socex.factor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import store.socex.Component;
-import store.socex.stereotype.Entrypoint;
+import org.springframework.stereotype.Component;
 
-/**
- * App driver.
- *
- * @author Taras Labiak <kissarat@gmail.com>
- */
-@Entrypoint("store.socex")
-public final class Factor implements Runnable, Component {
+@Component
+public final class Factor implements Runnable {
 
     /** The logger for this class. */
     private static final Logger logger = LoggerFactory.getLogger(Factor.class);
