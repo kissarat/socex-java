@@ -8,18 +8,29 @@ import org.slf4j.LoggerFactory;
  *
  * @author Taras Labiak <kissarat@gmail.com>
  */
-public class Lord {
+public class Lord implements Runnable {
+    static Lord instance;
+    protected final Registry registry;
 
     /** The logger for this class. */
     private static final Logger logger = LoggerFactory.getLogger(Lord.class);
 
-    /**
-     * Constructor.
-     */
     public Lord() {
+        this(new Registry());
     }
 
-    public static void main(String[] args) {
+    public Lord(Registry registry) {
+        this.registry = registry;
+        instance = this;
+    }
+
+    public static Lord create(String[] args) {
+        instance = new Lord();
+        return instance;
+    }
+
+    @Override
+    public void run() {
 
     }
 }

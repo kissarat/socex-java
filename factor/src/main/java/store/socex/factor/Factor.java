@@ -1,24 +1,24 @@
 package store.socex.factor;
 
-import store.socex.core.Lord;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import store.socex.core.Component;
+import store.socex.core.Lord;
 
 /**
  * App driver.
  *
  * @author Taras Labiak <kissarat@gmail.com>
  */
-public final class AppDriver {
+public final class Factor extends  implements Runnable, Component {
 
     /** The logger for this class. */
-    private static final Logger logger = LoggerFactory.getLogger(AppDriver.class);
+    private static final Logger logger = LoggerFactory.getLogger(Factor.class);
 
     /**
      * Private Constructor.
      */
-    private AppDriver() {
+    private Factor() {
     }
 
     /**
@@ -27,8 +27,11 @@ public final class AppDriver {
      * @param args Command line arguments
      */
     public static void main(final String[] args) {
-        logger.info("hello info");
+        Lord.create(args).run();
+    }
 
-        Lord klass = new Lord();
+    @Override
+    public void run() {
+
     }
 }

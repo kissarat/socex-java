@@ -1,18 +1,19 @@
 package store.socex.core.simple;
 
 public class DirectJoint implements SimpleJoint {
-    public String nameForDomain(SimpleDomain domain) {
-        return getJointId() + ':' + domain.getClass().getName();
-    }
-
     @Override
     public String attachedBy(SimpleDomain domain) {
-        return nameForDomain(domain);
+        var joint = domain.get(this.getJointId());
+        if (null == joint) {
+            return this.getJointId();
+        }
+        return joint.getJointId();
     }
 
     @Override
     public String attach(SimpleDomain domain) {
-        return nameForDomain(domain);
+        domain.bind(this);
+        return this.getJointId();
     }
 
     @Override

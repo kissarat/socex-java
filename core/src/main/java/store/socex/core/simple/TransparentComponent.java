@@ -1,4 +1,6 @@
 package store.socex.core.simple;
 
-public class TransparentComponent  {
+import store.socex.core.Component;
+
+public interface TransparentComponent extends SimpleJoint {
 }

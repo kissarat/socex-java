@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Registry extends HereDomain implements SimpleDomain {
-    protected final List<Component> singletones;
+    protected final List<Component> instances;
 
-    public Registry(String name, List<Component> singletones) {
+    public Registry(String name, List<Component> instances) {
         super(name);
-        this.singletones = singletones;
+        this.instances = instances;
     }
 
     public Registry() {
