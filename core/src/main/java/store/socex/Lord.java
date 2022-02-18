@@ -5,7 +5,9 @@ import java.lang.reflect.InvocationTargetException;
 public class Lord {
     public static void main(String[] args) {
         try {
-            var mainClass = Class.forName(System.getProperty("run"));
+            String runnerClassName = System.getProperty("run");
+            System.out.println("Run: " + runnerClassName);
+            var mainClass = Class.forName(runnerClassName);
             var constructor = mainClass.getConstructor();
             Runnable runnable = (Runnable) constructor.newInstance();
             var app = new Socex(runnable);

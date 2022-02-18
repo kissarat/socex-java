@@ -58,6 +58,12 @@ public class StringDictionary extends Dictionary<String, String> {
         return dictionary.get(key);
     }
 
+    public static StringDictionary createSingleParameter(String key, String value) {
+        var dictionary = new StringDictionary();
+        dictionary.put(key, value);
+        return dictionary;
+    }
+
     public int parse(String queryString, ComponentEncoder encoder) throws UnsupportedEncodingException {
         int i = 0;
         for(String param: queryString.split("&")) {
@@ -80,27 +86,29 @@ public class StringDictionary extends Dictionary<String, String> {
         return parse(queryString, FormEncoder.getInstance(FormEncoder.FORM_URLENCODED));
     }
 
-    public void putDefaults(Dictionary<String, String> defaults) {
-        String key = null;
-        for(var it = defaults.keys(); it.hasMoreElements(); key = it.nextElement()) {
+    public StringDictionary putDefaults(Dictionary<String, String> defaults) {
+        var it = defaults.keys();
+        for(String key = it.nextElement(); it.hasMoreElements(); key = it.nextElement()) {
             String value = get(key);
-            if (null == value || value.length() == 0) {
-                put(key, defaults.get(value));
+            System.out.println("Run: " + value);
+            if (null == value) {
+                put(key, defaults.get(key));
             }
         }
+        return this;
     }
 
     public void forEach(BiConsumer<String, String> consumer) {
-        String key = null;
-        for(var it = dictionary.keys(); it.hasMoreElements(); key = it.nextElement()) {
+        var it = dictionary.keys();
+        for(String key = it.nextElement(); it.hasMoreElements(); key = it.nextElement()) {
             consumer.accept(key, get(key));
         }
     }
 
     public String toString(ComponentEncoder encoder) throws UnsupportedEncodingException {
-        String key = null;
+        var it = dictionary.keys();
         var builder = new StringBuilder();
-        for(var it = dictionary.keys(); it.hasMoreElements(); key = it.nextElement()) {
+        for(String key = it.nextElement(); it.hasMoreElements(); key = it.nextElement()) {
             builder
                     .append(encoder.encode(key))
                     .append('=')

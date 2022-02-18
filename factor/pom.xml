@@ -6,12 +6,17 @@
     <groupId>store.socex</groupId>
     <artifactId>socex-factor</artifactId>
     <version>0.1.0</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <properties>
         <target.java.version>11</target.java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+
+    <modules>
+        <module>../core</module>
+    </modules>
 
 
     <dependencies>
