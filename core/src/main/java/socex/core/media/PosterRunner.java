@@ -2,27 +2,29 @@ package socex.core.media;
 
 import socex.core.media.telegram.TelegramBot;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 
-public class PosterRunner implements Runnable {
+public class PosterRunner implements Poster {
     private final Collection<Poster> posters;
 
-    public PosterRunner() {
-        posters = new ArrayList<>();
-        if (null != System.getProperty("telegram.bot.token")) {
-            posters.add(new TelegramBot());
-        }
+    public PosterRunner(Collection<Poster> posters) {
+        this.posters = posters;
     }
 
     @Override
-    public void run() {
+    public void publish(Post post) throws Exception {
         for(var poster: posters) {
-            try {
-                poster.post(new Post(System.getProperty("text")));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                poster.publish(post);
+        }
+    }
+
+    public static void main(String[] args) {
+        final PosterRunner runner = new PosterRunner(Arrays.asList(new TelegramBot()));
+        try {
+            runner.publish(new Post(args[0]));
+        } catch (Exception e) {
+//            e.printStackTrace();
+            System.err.println(e.toString());
         }
     }
 }

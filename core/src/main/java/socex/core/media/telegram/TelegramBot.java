@@ -48,12 +48,10 @@ public class TelegramBot implements Poster {
 //        throw new HttpResponseError(c.getResponseCode(), c.getResponseMessage());
     }
 
-    @Override
     public String getUserAgent() {
         return httpClient.getHeaders().get("user-agent");
     }
 
-    @Override
     public void setUserAgent(String value) {
         httpClient.getHeaders().put("user-agent", value);
     }
@@ -63,7 +61,7 @@ public class TelegramBot implements Poster {
     }
 
     @Override
-    public void post(Post post) throws Exception {
+    public void publish(Post post) throws Exception {
         sendMessage(post.getText());
     }
 }

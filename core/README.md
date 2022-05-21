@@ -31,7 +31,7 @@ $ mvn clean compile site
 # Generated from
 $ mvn archetype:generate -DinteractiveMode=false \
                          -DarchetypeArtifactId=maven-archetype-quickstart \
-                         -DgroupId=store.socex -DartifactId=socex-core \
+                         -DgroupId=socex.core -DartifactId=socex-core \
                          -Dversion='01' \
-                         -Dpackage=store.socex
+                         -Dpackage=socex.core
 ```

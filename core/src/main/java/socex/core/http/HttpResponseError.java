@@ -10,4 +10,12 @@ public class HttpResponseError extends Exception {
     public int getStatusCode() {
         return statusCode;
     }
+
+    @Override
+    public String toString() {
+        return "HttpResponseError{" +
+                "statusCode=" + getStatusCode() +
+                "message=" + getMessage() +
+                '}';
+    }
 }
