@@ -46,16 +46,16 @@ public class StringDictionary extends Dictionary<String, String> {
 
     @Override
     public String put(String key, String value) {
-        return null;
+        return dictionary.put(key, value);
     }
 
     @Override
     public String remove(Object key) {
-        return null;
+        return dictionary.remove(key);
     }
 
     public String remove(String key) {
-        return dictionary.get(key);
+        return dictionary.remove(key);
     }
 
     public static StringDictionary createSingleParameter(String key, String value) {
@@ -90,7 +90,6 @@ public class StringDictionary extends Dictionary<String, String> {
         var it = defaults.keys();
         for(String key = it.nextElement(); it.hasMoreElements(); key = it.nextElement()) {
             String value = get(key);
-            System.out.println("Run: " + value);
             if (null == value) {
                 put(key, defaults.get(key));
             }

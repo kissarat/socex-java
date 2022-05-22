@@ -17,15 +17,15 @@ public class TelegramBot implements Poster {
     private final AccessTokenHttpClient httpClient;
 
     public TelegramBot(String token, String chatId) {
-        var query = new Hashtable<String, String>();
+        var query = new StringDictionary();
         query.put("chat_id", chatId);
-        var headers = new Hashtable<String, String>();
+        var headers = new StringDictionary();
         headers.put("content-type", FormEncoder.FORM_URLENCODED);
         headers.put("accept", "application/json");
         httpClient = new AccessTokenHttpClient(
                 "https://api.telegram.org/bot" + token,
-                new StringDictionary(query),
-                new StringDictionary(headers)
+                query,
+                headers
         );
     }
 

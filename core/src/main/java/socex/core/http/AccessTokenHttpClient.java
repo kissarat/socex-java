@@ -42,7 +42,8 @@ public class AccessTokenHttpClient {
 
     public HttpURLConnection request(String method, String path, StringDictionary query,
                                      StringDictionary headers) throws IOException {
-        var url = makeURL(path, query.putDefaults(getQuery()));
+        // .putDefaults(getQuery())
+        var url = makeURL(path, query);
         var connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod(method);
         if (methodsWithBody.contains(method)) {

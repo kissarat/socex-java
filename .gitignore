@@ -2,7 +2,7 @@
 .classpath
 .project
 .settings
-/.idea
-/.vscode
-/core/target
-/factor/target
+/.idea/
+/.vscode/
+/core/src/main/resources/application.properties
+/core/target/

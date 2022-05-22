@@ -2,6 +2,7 @@ package socex.core.media;
 
 import socex.core.media.telegram.TelegramBot;
 
+import java.io.FileInputStream;
 import java.util.*;
 
 public class PosterRunner implements Poster {
@@ -19,12 +20,24 @@ public class PosterRunner implements Poster {
     }
 
     public static void main(String[] args) {
-        final PosterRunner runner = new PosterRunner(Arrays.asList(new TelegramBot()));
         try {
-            runner.publish(new Post(args[0]));
+            var stream = new FileInputStream(args[0]);
+            var properties = new Properties();
+            properties.load(stream);
+            PosterRunner runner = new PosterRunner(Arrays.asList(new TelegramBot(
+                    properties.getProperty("telegram.bot.token"),
+                    properties.getProperty("telegram.bot.chat")
+            )));
+            runner.publish(new Post(args[1]));
+//            final var env = System.getProperties();
+//            env
+//                    .keySet()
+//                    .stream()
+//                    .map(key -> key + "=" + env.getProperty(key.toString()))
+//                    .forEach(System.out::println);
         } catch (Exception e) {
-//            e.printStackTrace();
-            System.err.println(e.toString());
+            e.printStackTrace();
+//            System.err.println(e.toString());
         }
     }
 }
