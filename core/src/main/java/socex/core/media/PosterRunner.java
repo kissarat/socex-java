@@ -29,15 +29,8 @@ public class PosterRunner implements Poster {
                     properties.getProperty("telegram.bot.chat")
             )));
             runner.publish(new Post(args[1]));
-//            final var env = System.getProperties();
-//            env
-//                    .keySet()
-//                    .stream()
-//                    .map(key -> key + "=" + env.getProperty(key.toString()))
-//                    .forEach(System.out::println);
         } catch (Exception e) {
             e.printStackTrace();
-//            System.err.println(e.toString());
         }
     }
 }
