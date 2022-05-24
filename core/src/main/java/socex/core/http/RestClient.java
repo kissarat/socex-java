@@ -8,23 +8,24 @@ import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.List;
 
-public class AccessTokenHttpClient {
+public class RestClient {
     private final String origin;
     private final StringDictionary query;
     private final StringDictionary headers;
-    private int timeout = 10 * 1000;
+    private int timeout = 10000; //Integer.parseUnsignedInt(System.getProperty("request.timeout"));
     private final List<String> methodsWithBody = Arrays.asList("POST", "PUT", "PATCH");
+    private final List<String> methodsWithoutBody = Arrays.asList("GET", "DELETE");
 
-    public AccessTokenHttpClient(String origin, StringDictionary query, StringDictionary headers) {
+    public RestClient(String origin, StringDictionary query, StringDictionary headers) {
         this.origin = origin;
         this.query = query;
         this.headers = headers;
     }
-    public AccessTokenHttpClient(String origin, StringDictionary query) {
+    public RestClient(String origin, StringDictionary query) {
         this(origin, query, new StringDictionary());
     }
 
-    public AccessTokenHttpClient(String origin) {
+    public RestClient(String origin) {
         this(origin, new StringDictionary(), new StringDictionary());
     }
 
@@ -51,6 +52,8 @@ public class AccessTokenHttpClient {
             connection.setRequestProperty("content-length", "0");
             connection.setUseCaches(false);
             connection.setAllowUserInteraction(false);
+        } else if (!methodsWithoutBody.contains(method)) {
+            throw new Error("Unknown method HTTP " + method);
         }
         int timeout = getTimeout();
         if (timeout > 0) {
