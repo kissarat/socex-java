@@ -1,71 +1,52 @@
 package socex.core.media.facebook;
 
 import org.json.JSONObject;
+import socex.core.Store;
+import socex.core.StorePoster;
+import socex.core.http.RequestOptions;
 import socex.core.http.RestClient;
 import socex.core.http.HttpResponseError;
 import socex.core.http.StringDictionary;
+import socex.core.media.HttpPoster;
 import socex.core.media.Post;
 import socex.core.media.Poster;
+import socex.core.Token;
 import socex.core.utils.StringHelper;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.util.prefs.Preferences;
 
-public class FacebookPoster implements Poster {
-    private RestClient httpClient;
-    private static final String PREF_TOKEN_SUFFIX = "-token";
-    private final Preferences prefs = Preferences.systemNodeForPackage(FacebookPoster.class);
-    private final String appId;
-    private final String appSecret;
-    private final String pageId;
-
-
-    public FacebookPoster(String appId, String appSecret, String pageId) {
-        this.appId = appId;
-        this.appSecret = appSecret;
-        this.pageId = pageId;
-        String token = getAccessToken();
-        if (token.length() > 0) {
-            var query = new StringDictionary();
-            var headers = new StringDictionary();
-            headers.put("accept", "application/json");
-            httpClient = new RestClient(
-                    String.format("https://graph.facebook.com/v13.0/%s/feed", pageId),
-                    query,
-                    headers
-            );
-        }
+public class FacebookPoster extends FacebookAuth implements Poster {
+    @Override
+    public String getMethod() {
+        return "POST";
     }
 
-    public String getAccessToken() {
-        return prefs.get(pageId + PREF_TOKEN_SUFFIX, "");
+    @Override
+    public StringDictionary getQuery() {
+        return super.getQuery().set("access_token", store.get("token"));
     }
 
-    public String getGrantAccessTokenURL() {
-        return String.format("https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=SHORT-LIVED-USER-ACCESS-TOKEN", appId, appSecret);
+    @Override
+    public StringDictionary getHeaders() {
+        return super.getHeaders().set("accept", "application/json");
+    }
+
+    public FacebookPoster(Store store) {
+        super(store);
     }
 
     public String getPageAccessTokenURL() {
-        return String.format("https://graph.facebook.com/%s?fields=access_token&access_token=USER-ACCESS-TOKEN", pageId);
-    }
-
-    public void setAccessToken(String token) {
-        prefs.put(pageId + PREF_TOKEN_SUFFIX, token);
-    }
-
-    public String getUserAgent() {
-        return httpClient.getHeaders().get("user-agent");
-    }
-
-    public void setUserAgent(String value) {
-        httpClient.getHeaders().put("user-agent", value);
+        return String.format("https://graph.facebook.com/%s?fields=access_token&access_token=USER-ACCESS-TOKEN", store.get("page"));
     }
 
     protected String sendMessage(String text) throws IOException, HttpResponseError {
-        var params = new StringDictionary();
-        params.put("message", text);
-        var c = httpClient.request("POST", "/feed", params);
+        var options = new RequestOptions(this);
+        options
+                .setPath(String.format("https://graph.facebook.com/v13.0/%s/feed", store.get("page")))
+                .getQuery()
+                .set("message", text);
+        var c = httpClient.request(options);
 //        System.out.println("Response: " + c.toString());
         String responseString = StringHelper.readString(c.getInputStream());
         var responseJSON = new JSONObject(responseString);

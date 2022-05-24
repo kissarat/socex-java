@@ -1,10 +1,9 @@
 package socex.core.media.telegram;
 
 import org.json.JSONObject;
-import socex.core.http.RestClient;
-import socex.core.http.FormEncoder;
-import socex.core.http.HttpResponseError;
-import socex.core.http.StringDictionary;
+import socex.core.Store;
+import socex.core.http.*;
+import socex.core.media.HttpPoster;
 import socex.core.media.Post;
 import socex.core.media.Poster;
 import socex.core.utils.StringHelper;
@@ -12,41 +11,37 @@ import socex.core.utils.StringHelper;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
-public class TelegramPoster implements Poster {
-    private final RestClient httpClient;
-
-    public TelegramPoster(String token, String chatId) {
-        var query = new StringDictionary();
-        query.put("chat_id", chatId);
-        var headers = new StringDictionary();
-        headers.put("content-type", FormEncoder.FORM_URLENCODED);
-        headers.put("accept", "application/json");
-        httpClient = new RestClient(
-                "https://api.telegram.org/bot" + token,
-                query,
-                headers
-        );
+public class TelegramPoster extends HttpPoster implements Poster {
+    @Override
+    public String getPath() {
+        return String.format("https://api.telegram.org/bot%s/sendMessage", store.get("bot.token"));
     }
 
-    public TelegramPoster() {
-        this(
-                System.getProperty("telegram.bot.token"),
-                System.getProperty("telegram.bot.chat")
-        );
+    @Override
+    public String getMethod() {
+        return "GET";
     }
 
-    public String getUserAgent() {
-        return httpClient.getHeaders().get("user-agent");
+    @Override
+    public StringDictionary getHeaders() {
+        return super.getHeaders()
+                .set("accept", "application/json");
     }
 
-    public void setUserAgent(String value) {
-        httpClient.getHeaders().put("user-agent", value);
+    @Override
+    public StringDictionary getQuery() {
+        return super.getQuery()
+                .set("chat_id", store.get("bot.chat"));
+    }
+
+    public TelegramPoster(Store store) {
+        super(store);
     }
 
     protected String sendMessage(String text) throws IOException, HttpResponseError {
-        var params = new StringDictionary();
-        params.put("text", text);
-        var c = httpClient.request("GET", "/sendMessage", params);
+        var options = new RequestOptions(this);
+        options.getQuery().put("text", text);
+        var c = httpClient.request(options);
 //        System.out.println("Response: " + c.toString());
         String responseString = StringHelper.readString(c.getInputStream());
         var responseJSON = new JSONObject(responseString);

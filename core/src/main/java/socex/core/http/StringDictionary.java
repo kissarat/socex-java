@@ -49,6 +49,11 @@ public class StringDictionary extends Dictionary<String, String> {
         return dictionary.put(key, value);
     }
 
+    public StringDictionary set(String key, String value) {
+        dictionary.put(key, value);
+        return this;
+    }
+
     @Override
     public String remove(Object key) {
         return dictionary.remove(key);
