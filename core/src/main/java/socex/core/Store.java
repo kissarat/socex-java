@@ -11,4 +11,22 @@ public interface Store {
     default String getNamespace() {
         return  "";
     }
+
+    default boolean isEmpty(String key) {
+        String value = get(key);
+        return value == null || value.length() == 0;
+    }
+
+    default boolean getBoolean(String key) {
+        String value = get(key);
+        return !(value != null && value.length() > 0 && !value.equals("0"));
+    }
+
+    default void setBoolean(String key, boolean value) {
+        if (value) {
+            set(key, "1");
+        } else {
+            del(key);
+        }
+    }
 }

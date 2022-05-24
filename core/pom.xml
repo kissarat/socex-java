@@ -10,6 +10,7 @@
     <encoding>UTF-8</encoding>
     <checkstyle.config.location>src/main/resources/google_checks_modified.xml</checkstyle.config.location>
     <project.version>0.1.0</project.version>
+    <slf4j.version>1.7.25</slf4j.version>
   </properties>
 
   <version>0.1.0</version>
@@ -18,6 +19,16 @@
   <url>http://maven.apache.org</url>
 
   <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
     <dependency>
       <groupId>redis.clients</groupId>
       <artifactId>jedis</artifactId>
