@@ -24,11 +24,6 @@ public class PosterRunner {
         }
     }
 
-    private void readProperties() throws IOException {
-        var stream = new FileInputStream("/Users/ukraine/own/socex-java/core/src/main/resources/application.properties");
-        properties = new Properties();
-        properties.load(stream);
-    }
 
     private FacebookPoster createFacebookPoster() {
         return new FacebookPoster(
