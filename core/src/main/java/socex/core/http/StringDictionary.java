@@ -88,7 +88,8 @@ public class StringDictionary extends Dictionary<String, String> {
 
     public StringDictionary putDefaults(Dictionary<String, String> defaults) {
         var it = defaults.keys();
-        for(String key = it.nextElement(); it.hasMoreElements(); key = it.nextElement()) {
+        while (it.hasMoreElements()) {
+            String key = it.nextElement();
             String value = get(key);
             if (null == value) {
                 put(key, defaults.get(key));
@@ -99,7 +100,8 @@ public class StringDictionary extends Dictionary<String, String> {
 
     public void forEach(BiConsumer<String, String> consumer) {
         var it = dictionary.keys();
-        for(String key = it.nextElement(); it.hasMoreElements(); key = it.nextElement()) {
+        while (it.hasMoreElements()) {
+            String key = it.nextElement();
             consumer.accept(key, get(key));
         }
     }
@@ -107,7 +109,8 @@ public class StringDictionary extends Dictionary<String, String> {
     public String toString(ComponentEncoder encoder) throws UnsupportedEncodingException {
         var it = dictionary.keys();
         var builder = new StringBuilder();
-        for(String key = it.nextElement(); it.hasMoreElements(); key = it.nextElement()) {
+        while (it.hasMoreElements()) {
+            String key = it.nextElement();
             builder
                     .append(encoder.encode(key))
                     .append('=')

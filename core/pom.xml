@@ -19,6 +19,11 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20160810</version>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.12</version>
@@ -29,11 +34,6 @@
       <artifactId>assertj-core</artifactId>
       <version>3.6.2</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.json</groupId>
-      <artifactId>json</artifactId>
-      <version>20160810</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -85,20 +85,34 @@
           </compilerArgs>
         </configuration>
       </plugin>
-      <!--plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
         <version>3.3.0</version>
         <configuration>
-          <finalName>${project.name}-0.1</finalName>
-          <formats>
-            <format>tar.gz</format>
-          </formats>
           <descriptorRefs>
-            <descriptorRef>project</descriptorRef>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
           </descriptorRefs>
+          <archive>
+            <manifest>
+              <mainClass>socex.core.media.PosterRunner</mainClass>
+            </manifest>
+          </archive>
+          <finalName>socex-core-0.1</finalName>
+          <!--formats>
+            <format>tar.gz</format>
+          </formats-->
         </configuration>
-      </plugin-->
+        <executions>
+          <execution>
+            <id>assemble-all</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -114,7 +128,7 @@
         <artifactId>maven-resources-plugin</artifactId>
         <version>2.6</version>
       </plugin>
-      <plugin>
+      <!--plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.2.2</version>
@@ -126,7 +140,7 @@
             </manifest>
           </archive>
         </configuration>
-      </plugin>
+      </plugin-->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-install-plugin</artifactId>

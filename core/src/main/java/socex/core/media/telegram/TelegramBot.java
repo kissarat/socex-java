@@ -38,7 +38,7 @@ public class TelegramBot implements Poster {
 
     private JSONObject invoke(String method, StringDictionary params) throws IOException, HttpResponseError {
         var c = httpClient.request("GET", "/" + method, params);
-        System.out.println("Response: " + c.toString());
+//        System.out.println("Response: " + c.toString());
         String responseString = StringHelper.readString(c.getInputStream());
         var responseJSON = new JSONObject(responseString);
         if (HttpURLConnection.HTTP_OK == c.getResponseCode() && responseJSON.getBoolean("ok")) {
@@ -57,7 +57,9 @@ public class TelegramBot implements Poster {
     }
 
     protected void sendMessage(String text) throws IOException, HttpResponseError {
-        invoke("sendMessage", StringDictionary.createSingleParameter("text", text));
+        var dictionary = new StringDictionary();
+        dictionary.put("text", text);
+        invoke("sendMessage", dictionary);
     }
 
     @Override

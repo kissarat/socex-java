@@ -2,6 +2,7 @@ package socex.core.http;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,11 +34,11 @@ public class FormEncoder implements ComponentEncoder {
 
     @Override
     public String encode(String raw) throws UnsupportedEncodingException {
-        return URLEncoder.encode(raw, getContentType());
+        return URLEncoder.encode(raw, StandardCharsets.UTF_8);
     }
 
     @Override
     public String decode(String encoded) throws UnsupportedEncodingException {
-        return URLEncoder.encode(encoded, getContentType());
+        return URLEncoder.encode(encoded, StandardCharsets.UTF_8);
     }
 }
