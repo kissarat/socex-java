@@ -17,8 +17,31 @@ public class PosterRunner extends StorePoster {
     public PosterRunner(Store store) {
         super(store);
         posters = new HashMap<>();
-        posters.put("telegram", new TelegramPoster(store.derive("telegram")));
-        posters.put("facebook", new FacebookPoster(store.derive("facebook")));
+    }
+
+    public Poster createPoster(String type, String name) throws Exception {
+        if (type.equals(TelegramPoster.POSTER_TYPE)) {
+            return new TelegramPoster(store.derive(name));
+        } else if (type.equals(FacebookPoster.POSTER_TYPE)) {
+            return new FacebookPoster(store.derive(name));
+        } else {
+            throw new Exception("Unknown poster type " + type);
+        }
+    }
+
+    public void addPoster(String name, Poster poster) {
+        posters.put(name, poster);
+    }
+
+    public void addPoster(String name, String type) throws Exception {
+        posters.put(name, createPoster(type, name));
+    }
+
+    public void addPoster(String name) throws Exception {
+        addPoster(name, name);
+    }
+
+    public void checkPosters() {
         for(var entry: posters.entrySet()) {
             if (!entry.getValue().isEnabled()) {
                 logger.warn(entry.getKey() + " posting is disabled");
@@ -45,6 +68,8 @@ public class PosterRunner extends StorePoster {
     public static void main(String[] args) {
         try {
             var hub = new PosterRunner(new JedisStore());
+            hub.addPoster(TelegramPoster.POSTER_TYPE);
+            hub.addPoster(FacebookPoster.POSTER_TYPE);
             String command = args[0];
             if (command.equals("facebook-login")) {
                 System.out.println(hub.getFacebookPoster().createLoginDialogURL(args[1]));
@@ -60,6 +85,12 @@ public class PosterRunner extends StorePoster {
             }
             if (command.equals("facebook-permissions")) {
                 System.out.println(hub.getFacebookPoster().requestPermissions().toString(2));
+            }
+            if (command.equals("facebook-app-token")) {
+                System.out.println(hub.getFacebookPoster().createAppAccessTokenURL());
+            }
+            if (command.equals("facebook-page-token")) {
+                System.out.println(hub.getFacebookPoster().createUserAccessTokenURL(args[1], args[2]));
             }
 //            var facebookPrefix = "facebook-";
 //            for(String command: args) {

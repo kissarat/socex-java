@@ -2,6 +2,8 @@ package socex.core;
 
 public interface Store {
     String get(String key);
+    String require(String key) throws PropertyError;
+
     void set(String key, String value, int seconds);
     default void set(String key, String value) {
         set(key, value, 0);

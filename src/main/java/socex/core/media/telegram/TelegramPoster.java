@@ -12,6 +12,8 @@ import socex.core.media.Poster;
 import java.io.IOException;
 
 public class TelegramPoster extends HttpPoster implements Poster {
+    public static final String POSTER_TYPE = "telegram";
+
     final static Logger logger = LoggerFactory.getLogger(TelegramPoster.class);
 
     @Override
@@ -36,7 +38,9 @@ public class TelegramPoster extends HttpPoster implements Poster {
 
     protected String sendMessage(String text) throws IOException, HttpResponseError {
         var options = inheritRequestDefaults();
-        options.getQuery().put("text", text);
+        options
+                .getQuery()
+                .put("text", text);
         var responseJSON = request(options);
         if (responseJSON.getBoolean("ok")) {
             String id = Integer.toString(responseJSON.getJSONObject("result").getInt("message_id"));

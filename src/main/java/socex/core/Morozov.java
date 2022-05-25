@@ -1,10 +1,10 @@
-package socex.morozov;
+package socex.core;
 
 import java.util.*;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
-public class App 
+public class Morozov
 {
     public static void printLines(List<String> lines) {
         Collections.sort(lines);

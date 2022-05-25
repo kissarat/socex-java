@@ -4,6 +4,5 @@
 .settings
 .idea/
 /.vscode/
-/core/src/main/resources/application.properties
-/core/target/
-/morozov/target/
+/application.properties
+/target/

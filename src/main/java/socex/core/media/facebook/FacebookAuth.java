@@ -3,6 +3,7 @@ package socex.core.media.facebook;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import socex.core.PropertyError;
 import socex.core.Store;
 import socex.core.http.HttpResponseError;
 import socex.core.http.RequestOptions;
@@ -17,6 +18,11 @@ public class FacebookAuth extends HttpPoster  {
     public static final String API_VERSION = "13.0";
     public static final String GRAPH_ORIGIN = "https://graph.facebook.com/v" + API_VERSION;
     public static final String USER_ORIGIN = "https://www.facebook.com/v" + API_VERSION;
+    public static final String ACCESS_TOKEN_PROPERTY = "token";
+
+    public String getAccessToken() throws PropertyError {
+        return store.require(ACCESS_TOKEN_PROPERTY);
+    }
 
     public FacebookAuth(Store store) {
         super(store);
@@ -52,14 +58,31 @@ public class FacebookAuth extends HttpPoster  {
         );
     }
 
-    public void setAccessToken(String token, int expiredIn) {
-        var expiredAt = new Date(System.currentTimeMillis() + (expiredIn * 1000L));
-        logger.info("Set access token token that will expired at " + expiredAt.toString());
-        store.set("token", token, expiredIn);
+    public String createAppAccessTokenURL() {
+        return createURL(
+                "/oauth/access_token",
+                createAuthQuery()
+                        .set("grant_type", "client_credentials")
+        );
     }
 
-    public String getGrantAccessTokenURL() {
-        return String.format("%s/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=SHORT-LIVED-USER-ACCESS-TOKEN", store.get("id"), store.get("secret"));
+    public String createUserAccessTokenURL(String userId, String userAccessToken) {
+        return createURL(
+                String.format("/%s/accounts", userId),
+                new StringDictionary()
+                    .set("access_token", userAccessToken)
+        );
+    }
+
+    public void setAccessToken(String token, int expiredIn) {
+        if (expiredIn > 0) {
+            var expiredAt = new Date(System.currentTimeMillis() + (expiredIn * 1000L));
+            logger.info("Set access token that will expired at " + expiredAt.toString());
+            store.set(ACCESS_TOKEN_PROPERTY, token, expiredIn);
+        } else {
+            logger.info("Set app access token");
+            store.set(ACCESS_TOKEN_PROPERTY, token);
+        }
     }
 
     @Override
@@ -67,14 +90,14 @@ public class FacebookAuth extends HttpPoster  {
         return super.isEnabled() && !store.isEmpty("app.id");
     }
 
-    protected JSONObject authenticatedRequest(RequestOptions options) throws IOException, HttpResponseError {
+    protected JSONObject authenticatedRequest(RequestOptions options) throws IOException, HttpResponseError, PropertyError {
         options
                 .getQuery()
-                .set("access_token", store.get("token"));
+                .set("access_token", getAccessToken());
         return request(options);
     }
 
-    public JSONObject requestPermissions() throws IOException, HttpResponseError {
+    public JSONObject requestPermissions() throws IOException, HttpResponseError, PropertyError {
         var options = new RequestOptions(this);
         options.setPath(GRAPH_ORIGIN + "/app/permissions");
         return authenticatedRequest(options);

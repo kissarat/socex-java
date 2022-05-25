@@ -26,6 +26,16 @@ public class JedisStore implements Store {
     }
 
     @Override
+    public String require(String key) throws PropertyError {
+        String name = createKey(key);
+        String value = jedis.get(name);
+        if (value == null || value.length() == 0) {
+            throw new PropertyError(name);
+        }
+        return value;
+    }
+
+    @Override
     public void set(String key, String value, int seconds) {
         jedis.set(createKey(key), value, SetParams.setParams().ex(seconds));
     }
